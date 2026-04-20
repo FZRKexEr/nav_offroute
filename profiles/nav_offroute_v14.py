@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Streaming route projection + commercial multi-hypothesis conservative off-route detector prototype.
+Streaming route projection + multi-hypothesis conservative off-route detector prototype.
 
 Input assumptions:
 - route GeoJSON: FeatureCollection of LineString features in route order, feature.properties.id optional.

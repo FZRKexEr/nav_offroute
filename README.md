@@ -1,15 +1,14 @@
-# Commercial Off-route Detector Artifacts
+# nav_offroute
 
 这个目录已经整理成 4 个主要模块：
 
-- `nav_offroute_commercial.py` 和 `profiles/`：偏航算法脚本
+- `nav_offroute.py` 和 `profiles/`：偏航算法脚本
 - `suite/`：synthetic 数据生成脚本和生成结果
 - `validation/`：验证脚本和验证结果
 - `frontend/`：JSONL/GeoJSON 可视化查看器
 
 说明：
 
-- 原始真实用户 case 已从当前仓库移除，不再随仓库分发。
 - 当前 README 只描述公开可运行的 synthetic / validation / frontend 工作流。
 
 ## Quick Start
@@ -17,7 +16,6 @@
 先在项目根目录激活虚拟环境：
 
 ```bash
-cd /Users/xinpeng/Downloads/commercial_offroute_final_artifacts
 source .venv/bin/activate
 ```
 
@@ -26,17 +24,17 @@ source .venv/bin/activate
 ```bash
 python validation/validate_offroute_suite.py \
   --suite suite/synthetic_nav_suite_v4_extreme_6400.jsonl \
-  --algorithm nav_offroute_commercial.py \
-  --out validation/validation_v4_commercial.csv
+  --algorithm nav_offroute.py \
+  --out validation/validation_v4.csv
 ```
 
 ## Directory Layout
 
-- `nav_offroute_commercial.py`
-  默认商用 spoken off-route 算法。
-- `profiles/nav_offroute_commercial_v13.py`
+- `nav_offroute.py`
+  默认 spoken off-route 算法。
+- `profiles/nav_offroute_v13.py`
   更低时延的 profile。
-- `profiles/nav_offroute_commercial_v14.py`
+- `profiles/nav_offroute_v14.py`
   版本化备份，内容与默认脚本一致。
 - `suite/`
   `v2 / v3 / v4` synthetic 数据生成脚本，以及对应 `jsonl / summary`。
@@ -49,10 +47,10 @@ python validation/validate_offroute_suite.py \
 
 ## Module 1: Run The Algorithm
 
-### 1. Run the default commercial algorithm
+### 1. Run the default algorithm
 
 ```bash
-python nav_offroute_commercial.py <route_geojson> <gps_geojson> [--csv debug.csv]
+python nav_offroute.py <route_geojson> <gps_geojson> [--csv debug.csv]
 ```
 
 参数：
@@ -61,7 +59,7 @@ python nav_offroute_commercial.py <route_geojson> <gps_geojson> [--csv debug.csv
 - `<gps_geojson>`：定位点 GeoJSON
 - `--csv`：可选，输出逐点调试 CSV
 
-如果你有本地私有 case，可以用上面的形式直接跑，不要求文件一定来自当前仓库。
+如果你有本地回放数据，可以用上面的形式直接跑，不要求文件一定来自当前仓库。
 
 ### 2. Run a profile algorithm
 
@@ -70,13 +68,13 @@ python nav_offroute_commercial.py <route_geojson> <gps_geojson> [--csv debug.csv
 低时延 profile：
 
 ```bash
-python profiles/nav_offroute_commercial_v13.py <route_geojson> <gps_geojson> [--csv debug_v13.csv]
+python profiles/nav_offroute_v13.py <route_geojson> <gps_geojson> [--csv debug_v13.csv]
 ```
 
 版本化备份：
 
 ```bash
-python profiles/nav_offroute_commercial_v14.py <route_geojson> <gps_geojson> [--csv debug_v14.csv]
+python profiles/nav_offroute_v14.py <route_geojson> <gps_geojson> [--csv debug_v14.csv]
 ```
 
 ## Module 2: Generate Synthetic Suites
@@ -88,7 +86,7 @@ python profiles/nav_offroute_commercial_v14.py <route_geojson> <gps_geojson> [--
 - `synthetic_nav_cases_v3_conservative.py`
   更保守的产品语义
 - `synthetic_nav_cases_v4_extreme.py`
-  最终商用语义，强调 spoken off-route 要谨慎
+  最终默认语义，强调 spoken off-route 要谨慎
 
 ### 1. Generate v2
 
@@ -154,8 +152,8 @@ python validation/validate_offroute_suite.py \
 ```bash
 python validation/validate_offroute_suite.py \
   --suite suite/synthetic_nav_suite_v2.jsonl \
-  --algorithm nav_offroute_commercial.py \
-  --out validation/validation_v2_commercial.csv
+  --algorithm nav_offroute.py \
+  --out validation/validation_v2.csv
 ```
 
 ### 2. Validate v3
@@ -163,8 +161,8 @@ python validation/validate_offroute_suite.py \
 ```bash
 python validation/validate_offroute_suite.py \
   --suite suite/synthetic_nav_suite_v3_conservative.jsonl \
-  --algorithm nav_offroute_commercial.py \
-  --out validation/validation_v3_commercial.csv
+  --algorithm nav_offroute.py \
+  --out validation/validation_v3.csv
 ```
 
 ### 3. Validate v4
@@ -172,8 +170,8 @@ python validation/validate_offroute_suite.py \
 ```bash
 python validation/validate_offroute_suite.py \
   --suite suite/synthetic_nav_suite_v4_extreme_6400.jsonl \
-  --algorithm nav_offroute_commercial.py \
-  --out validation/validation_v4_commercial.csv
+  --algorithm nav_offroute.py \
+  --out validation/validation_v4.csv
 ```
 
 ### 4. Validate with another profile
@@ -181,8 +179,8 @@ python validation/validate_offroute_suite.py \
 ```bash
 python validation/validate_offroute_suite.py \
   --suite suite/synthetic_nav_suite_v4_extreme_6400.jsonl \
-  --algorithm profiles/nav_offroute_commercial_v13.py \
-  --out validation/validation_v4_commercial_v13.csv
+  --algorithm profiles/nav_offroute_v13.py \
+  --out validation/validation_v4_v13.csv
 ```
 
 验证输出 CSV 里会包含：
@@ -243,9 +241,9 @@ npm run preview
 
 可选算法脚本示例：
 
-- `../nav_offroute_commercial.py`
-- `../profiles/nav_offroute_commercial_v13.py`
-- `../profiles/nav_offroute_commercial_v14.py`
+- `../nav_offroute.py`
+- `../profiles/nav_offroute_v13.py`
+- `../profiles/nav_offroute_v14.py`
 
 说明：
 
@@ -257,8 +255,8 @@ npm run preview
 
 如果你要看设计和结果总结，优先看：
 
-- [`docs/commercial_offroute_final_report.md`](/Users/xinpeng/Downloads/commercial_offroute_final_artifacts/docs/commercial_offroute_final_report.md)
-- [`docs/offroute_architecture_design.md`](/Users/xinpeng/Downloads/commercial_offroute_final_artifacts/docs/offroute_architecture_design.md)
+- `docs/offroute_final_report.md`
+- `docs/offroute_architecture_design.md`
 
 ## Typical Workflows
 
@@ -269,9 +267,9 @@ source .venv/bin/activate
 python suite/synthetic_nav_cases_v2.py --out suite/synthetic_nav_suite_v2.jsonl --summary suite/synthetic_nav_suite_v2_summary.json
 python suite/synthetic_nav_cases_v3_conservative.py --out suite/synthetic_nav_suite_v3_conservative.jsonl --summary suite/synthetic_nav_suite_v3_conservative_summary.json
 python suite/synthetic_nav_cases_v4_extreme.py --out suite/synthetic_nav_suite_v4_extreme_6400.jsonl --summary suite/synthetic_nav_suite_v4_extreme_6400_summary.json --limit 6400
-python validation/validate_offroute_suite.py --suite suite/synthetic_nav_suite_v2.jsonl --algorithm nav_offroute_commercial.py --out validation/validation_v2_commercial.csv
-python validation/validate_offroute_suite.py --suite suite/synthetic_nav_suite_v3_conservative.jsonl --algorithm nav_offroute_commercial.py --out validation/validation_v3_commercial.csv
-python validation/validate_offroute_suite.py --suite suite/synthetic_nav_suite_v4_extreme_6400.jsonl --algorithm nav_offroute_commercial.py --out validation/validation_v4_commercial.csv
+python validation/validate_offroute_suite.py --suite suite/synthetic_nav_suite_v2.jsonl --algorithm nav_offroute.py --out validation/validation_v2.csv
+python validation/validate_offroute_suite.py --suite suite/synthetic_nav_suite_v3_conservative.jsonl --algorithm nav_offroute.py --out validation/validation_v3.csv
+python validation/validate_offroute_suite.py --suite suite/synthetic_nav_suite_v4_extreme_6400.jsonl --algorithm nav_offroute.py --out validation/validation_v4.csv
 ```
 
 ### 2. Inspect generated data in the viewer
@@ -286,5 +284,5 @@ npm run dev
 ## Notes
 
 - `v4` 生成依赖 `suite/synthetic_nav_cases_v2.py` 和 `suite/synthetic_nav_cases_v3_conservative.py`，所以不要只单独移动 `v4` 脚本。
-- synthetic suite 适合做稳定回归，私有真实 case 更适合做内部产品直觉校验。
-- 当前目录已经生成好了 `v2 / v3 / v4` 三套 suite 和三份 commercial 验证结果，可直接复用，不一定每次都需要重跑。
+- synthetic suite 适合做稳定回归，本地回放数据更适合做内部产品直觉校验。
+- 当前目录已经生成好了 `v2 / v3 / v4` 三套 suite 和三份验证结果，可直接复用，不一定每次都需要重跑。

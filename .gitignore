@@ -28,8 +28,9 @@ validation/debug*.csv
 suite/*smoke*.jsonl
 suite/*smoke*.json
 
-# Private real-world cases
-real_cases/
+# Local-only data
+local_cases/
+local_data/
 
 # Large generated synthetic suites
 suite/*.jsonl

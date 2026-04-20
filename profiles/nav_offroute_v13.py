@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Streaming route projection + commercial multi-hypothesis conservative off-route detector prototype.
+Streaming route projection + multi-hypothesis conservative off-route detector prototype.
 
 Input assumptions:
 - route GeoJSON: FeatureCollection of LineString features in route order, feature.properties.id optional.
@@ -728,21 +728,12 @@ class OffRouteDetector:
                 immediate = True
                 reasons.append('immediate_score')
 
-        # Spoken off-route needs physical evidence beyond a high scalar score.
-        # Residual-only evidence is not enough because urban-canyon/vector-bias cases can
-        # produce tens of meters of coherent offset with nearly correct route shape.
         spoken_physical_evidence = bool(
-            proj.endpoint_gap >= 45.0
-            or proj.dist >= raw_hard + 10.0
-            or (
-                residual >= soft + 18.0
-                and (
-                    (hdiff is not None and hdiff >= 70.0 and proj.dist >= soft + 8.0)
-                    or (abs(ds) <= 2.5 and p.speed >= 2.0 and proj.dist >= soft + 14.0)
-                    or (self.prev_proj is not None and ds < -28.0 and proj.dist >= 38.0)
-                )
-            )
-            or (hdiff is not None and hdiff >= 105.0 and proj.dist >= 65.0 and abs(ds) <= 2.5 and p.speed >= 2.0)
+            residual >= soft + 8.0
+            or proj.endpoint_gap >= 45.0
+            or proj.dist >= soft + 20.0
+            or (hdiff is not None and hdiff >= 95.0 and proj.dist >= 52.0 and abs(ds) <= 2.5 and p.speed >= 2.0)
+            or (self.prev_proj is not None and ds < -35.0 and proj.dist >= 38.0)
         )
         if self.off_route:
             self.state = 'OFF_ROUTE'

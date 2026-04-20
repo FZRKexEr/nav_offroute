@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 """
-Synthetic navigation cases v4: commercial-conservative semantics.
+Synthetic navigation cases v4: conservative default semantics.
 
 This generator intentionally separates spoken off-route labels from internal suspect labels.
 Ambiguous shortcut/rejoin, early cross-over U-turn, correlated urban-canyon GPS bias, and
@@ -290,7 +290,7 @@ def mutate_record_by_category(rec: Dict[str, Any], rng: random.Random) -> Dict[s
 def generate_jsonl(out: str, seed: int = 20260421, scale: float = 1.0, limit: Optional[int] = None) -> Dict[str, Any]:
     rng = random.Random(seed + 9131)
     specs = []
-    base = v3.base_commercial_specs(seed, scale * 1.05) + v3.conservative_extra_specs(seed, scale * 1.05)
+    base = v3.base_default_specs(seed, scale * 1.05) + v3.conservative_extra_specs(seed, scale * 1.05)
     specs.extend(relabel_for_spoken_policy(sp, rng) for sp in base)
     specs.extend(extreme_extra_specs(seed, scale))
     rng.shuffle(specs)

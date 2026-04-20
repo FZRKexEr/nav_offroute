@@ -1,11 +1,11 @@
-# 商用导航偏航判断：极致保守版迭代报告
+# 导航偏航判断：极致保守版迭代报告
 
 ## 0. 结论
 
 这一轮我把目标从“尽快抓偏航”重构成“只有高置信才对用户播偏航”。最终推荐默认使用：
 
-- `nav_offroute_commercial.py`：最终默认版，等价于 `commercial_v14`。
-- `nav_offroute_commercial_v13.py`：较低延迟、略高误报的 profile，可用于内部 silent reroute 或灰度比较。
+- `nav_offroute.py`：最终默认版，等价于 `v14`。
+- `nav_offroute_v13.py`：较低延迟、略高误报的 profile，可用于内部 silent reroute 或灰度比较。
 
 最终策略不是一个单一 rule，而是在线多假设竞争：
 
@@ -115,13 +115,13 @@ v4 的一个重要语义变化：很多过去标成 off 的 case 被改成 ambig
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | balanced_v6 | 832 | 335 | 16 | 11 | 6 | 69.33% | 43.56% | 6.26% |
 | conservative_v8 | 992 | 96 | 93 | 19 | 0 | 82.67% | 12.48% | 25.99% |
-| commercial_v13 | 1016 | 29 | 116 | 36 | 3 | 84.67% | 3.77% | 35.27% |
-| commercial_v14 default | 1000 | 21 | 129 | 47 | 3 | 83.33% | 2.73% | 40.84% |
+| v13 | 1016 | 29 | 116 | 36 | 3 | 84.67% | 3.77% | 35.27% |
+| v14 default | 1000 | 21 | 129 | 47 | 3 | 83.33% | 2.73% | 40.84% |
 
 解释：
 
-- `commercial_v14` 的通过率不是最高，但误报最少，符合“商用播报谨慎”的目标。
-- `commercial_v13` 可以作为低延迟 profile：更早报一部分真实偏航，但 nooff FP 率更高。
+- `v14` 的通过率不是最高，但误报最少，符合“用户播报谨慎”的目标。
+- `v13` 可以作为低延迟 profile：更早报一部分真实偏航，但 nooff FP 率更高。
 
 ### 3.2 v4 极端数据集 sample 1000
 
@@ -129,17 +129,17 @@ v4 的一个重要语义变化：很多过去标成 off 的 case 被改成 ambig
 
 | 算法 | PASS | FP | MISS | LATE | EARLY | 通过率 | nooff FP 率 | off MISS+LATE 率 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| commercial_v14 default | 829 | 103 | 37 | 31 | 0 | 82.90% | 13.96% | 25.95% |
+| v14 default | 829 | 103 | 37 | 31 | 0 | 82.90% | 13.96% | 25.95% |
 
 v4 比 v3 更极端，包含大量“几何上像偏航，但产品上应谨慎不播”的 nooff case，所以 nooff FP 更难降。
 
-### 3.3 私有真实 case 回归
+### 3.3 补充回放观察
 
-私有真实用户 case 已从当前仓库移除，不再随仓库分发。
+当前仓库只保留公开 synthetic 数据与验证结果。
 
-内部回归结论保留为高层结论：
+补充观察保留为高层结论：
 
-- 商用默认版在私有真实 case 上能维持既有回归表现；
+- 默认版在本地回放数据上能维持既有回归表现；
 - 相比更早期算法，spoken off-route 播报整体更谨慎；
 - 更早阶段的信号可以通过 `SUSPECT` 提供给 silent reroute。
 
@@ -342,22 +342,22 @@ spoken_off_route = P(true_offroute) > 0.97
 
 没有路网拓扑时，正确产品策略应该偏向“不播”，最多进入 SUSPECT 并静默重算。
 
-## 9. 下一步真实商用落地优先级
+## 9. 下一步真实落地优先级
 
 1. 引入路网候选道路和 maneuver metadata。只要知道附近有哪些可行道路、是否允许掉头/穿越/转向，很多 ambiguous case 会从不可判定变成可判定。
-2. 线上记录每次 `SUSPECT` 和 `OFF_ROUTE` 前后 30 秒特征，建立真实 case bank。
-3. 用人工/半自动方式给真实 case 标注：误报、漏报、合理不播、应该静默重算、应该播报。
+2. 线上记录每次 `SUSPECT` 和 `OFF_ROUTE` 前后 30 秒特征，建立回放 case bank。
+3. 用人工/半自动方式给回放 case 标注：误报、漏报、合理不播、应该静默重算、应该播报。
 4. 用当前特征训练校准模型，但保留 deterministic safety gates。
 5. 按城市/道路类型/设备定位质量做 profile。
 6. 将 Python 原型移植到 Go 前，先冻结 feature schema 和 case suite；否则 Go 版会频繁返工。
 
 ## 10. 文件清单
 
-- `nav_offroute_commercial.py`：最终默认算法，commercial_v14。
-- `nav_offroute_commercial_v13.py`：低延迟 profile。
+- `nav_offroute.py`：最终默认算法，v14。
+- `nav_offroute_v13.py`：低延迟 profile。
 - `suite/synthetic_nav_cases_v4_extreme.py`：v4 数据生成器。
 - `synthetic_nav_suite_v4_extreme_6400.jsonl`：6400 case 数据集。
 - `validation/validate_offroute_suite.py`：全量验证器。
-- `validation_v3_commercial_v14.csv`：v3 全量验证。
-- `validation_v4_commercial_v14_sample1000.csv`：v4 sample 验证。
-- `commercial_validation_summary.csv`：汇总对比。
+- `validation_v3.csv`：v3 全量验证。
+- `validation_v4.csv`：v4 全量验证。
+- `validation/`：汇总对比输出目录。

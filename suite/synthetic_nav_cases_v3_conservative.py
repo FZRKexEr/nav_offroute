@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 """
-Synthetic navigation cases, conservative-commercial labeling.
+Synthetic navigation cases, conservative default labeling.
 
 This suite intentionally labels many ambiguous/shortcut/bias cases as no-off-route,
 matching a cautious product policy: only declare off-route when the route hypothesis is
@@ -95,7 +95,7 @@ def route_len(path: Sequence[Point]) -> float:
     return v2.polyline_lengths(path)[1]
 
 
-def base_commercial_specs(seed: int, scale: float) -> List[v2.CaseSpec]:
+def base_default_specs(seed: int, scale: float) -> List[v2.CaseSpec]:
     """Base cases whose labels are still valid under cautious semantics."""
     rng = random.Random(seed)
     def n(x: int) -> int:
@@ -271,7 +271,7 @@ def mutate_record_by_category(rec: Dict[str, Any], rng: random.Random) -> Dict[s
 
 def generate_jsonl(out: str, seed: int = 20260421, scale: float = 1.0, limit: Optional[int] = None) -> Dict[str, Any]:
     rng = random.Random(seed + 909)
-    specs = base_commercial_specs(seed, scale) + conservative_extra_specs(seed, scale)
+    specs = base_default_specs(seed, scale) + conservative_extra_specs(seed, scale)
     rng.shuffle(specs)
     if limit is not None:
         specs = specs[:limit]
