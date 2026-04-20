@@ -1,0 +1,149 @@
+{
+  "seed": 20260421,
+  "scale": 1.0,
+  "case_count": 6693,
+  "offroute_expected_count": 2310,
+  "nooff_expected_count": 4383,
+  "categories": {
+    "shortcut_wrong_corridor_off": {
+      "count": 220,
+      "off_expected": 220
+    },
+    "small_corner_cut_nooff": {
+      "count": 180,
+      "off_expected": 0
+    },
+    "parallel_same_shape_ambiguous_nooff": {
+      "count": 320,
+      "off_expected": 0
+    },
+    "building_canyon_vector_bias_nooff": {
+      "count": 560,
+      "off_expected": 0
+    },
+    "shortcut_rejoin_allowed_nooff": {
+      "count": 480,
+      "off_expected": 0
+    },
+    "right_angle_follow": {
+      "count": 520,
+      "off_expected": 0
+    },
+    "poor_gnss_large_error_nooff": {
+      "count": 220,
+      "off_expected": 0
+    },
+    "parallel_road_after_branch_off": {
+      "count": 220,
+      "off_expected": 220
+    },
+    "right_angle_missed_turn": {
+      "count": 520,
+      "off_expected": 520
+    },
+    "uturn_follow": {
+      "count": 260,
+      "off_expected": 0
+    },
+    "parallel_branch_sustained_far_off": {
+      "count": 220,
+      "off_expected": 220
+    },
+    "uturn_missed_continue_straight": {
+      "count": 260,
+      "off_expected": 260
+    },
+    "uturn_early_allowed_nooff": {
+      "count": 521,
+      "off_expected": 0
+    },
+    "right_angle_early_turn_parallel": {
+      "count": 180,
+      "off_expected": 151
+    },
+    "right_angle_late_turn_parallel": {
+      "count": 180,
+      "off_expected": 161
+    },
+    "gradual_lateral_drift_probe": {
+      "count": 158,
+      "off_expected": 57
+    },
+    "uturn_too_early_far_off": {
+      "count": 120,
+      "off_expected": 120
+    },
+    "close_parallel_loop_follow": {
+      "count": 75,
+      "off_expected": 0
+    },
+    "parallel_measurement_bias_nooff": {
+      "count": 320,
+      "off_expected": 0
+    },
+    "roundabout_wrong_exit_off": {
+      "count": 70,
+      "off_expected": 70
+    },
+    "fork_wrong_branch_off": {
+      "count": 96,
+      "off_expected": 96
+    },
+    "gps_usable_lowtrust_spike_nooff": {
+      "count": 61,
+      "off_expected": 0
+    },
+    "wrongway_from_start_off": {
+      "count": 35,
+      "off_expected": 35
+    },
+    "loop_wrong_future_leg_off": {
+      "count": 64,
+      "off_expected": 64
+    },
+    "temporary_bias_episode_nooff": {
+      "count": 320,
+      "off_expected": 0
+    },
+    "reverse_along_route_off": {
+      "count": 55,
+      "off_expected": 55
+    },
+    "gps_unusable_spikes_nooff": {
+      "count": 72,
+      "off_expected": 0
+    },
+    "gradual_lateral_drift_ambiguous_nooff": {
+      "count": 62,
+      "off_expected": 0
+    },
+    "fork_correct_branch_follow": {
+      "count": 61,
+      "off_expected": 0
+    },
+    "start_far_parallel_off": {
+      "count": 61,
+      "off_expected": 61
+    },
+    "start_approach_extension_nooff": {
+      "count": 64,
+      "off_expected": 0
+    },
+    "roundabout_follow": {
+      "count": 62,
+      "off_expected": 0
+    },
+    "bad_heading_onroute_nooff": {
+      "count": 74,
+      "off_expected": 0
+    },
+    "shortcut_diagonal_allowed_nooff": {
+      "count": 1,
+      "off_expected": 0
+    },
+    "shortcut_block_straight_allowed_nooff": {
+      "count": 1,
+      "off_expected": 0
+    }
+  }
+}

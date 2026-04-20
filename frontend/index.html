@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>轨迹查看</title>
+  </head>
+  <body>
+    <div id="app">
+      <div id="map" aria-label="地图"></div>
+
+      <div class="panel toolbar">
+        <div class="toolbar-row">
+          <button id="prevButton" type="button">上一条</button>
+          <input id="lineInput" type="number" min="1" step="1" inputmode="numeric" />
+          <span id="lineCount" class="muted">/ 0</span>
+          <button id="nextButton" type="button">下一条</button>
+          <button id="randomButton" type="button">随机</button>
+          <button id="fitButton" type="button">适配</button>
+        </div>
+
+        <div class="toolbar-row">
+          <label class="toggle">
+            <input id="routeToggle" type="checkbox" checked />
+            路线
+          </label>
+          <label class="toggle">
+            <input id="gpsToggle" type="checkbox" checked />
+            GPS
+          </label>
+          <label class="fileButton" for="fileInput">打开文件</label>
+          <input id="fileInput" type="file" accept=".jsonl,text/plain,application/json" hidden />
+          <span id="fileName" class="muted"></span>
+        </div>
+
+        <div class="toolbar-row">
+          <label class="toggle">
+            <input id="algorithmToggle" type="checkbox" checked disabled />
+            算法投影
+          </label>
+          <label class="fileButton" for="algorithmFileInput">选择算法 Py</label>
+          <input id="algorithmFileInput" type="file" accept=".py,text/x-python,text/plain" hidden />
+          <button id="runAlgorithmButton" type="button" disabled>运行算法</button>
+          <span id="algorithmFileName" class="muted"></span>
+        </div>
+
+        <div class="toolbar-row">
+          <button id="measureButton" type="button">测距</button>
+          <span id="measureStatus" class="muted">未测量</span>
+          <span id="algorithmStatus" class="muted">算法未运行</span>
+        </div>
+
+        <div class="toolbar-row legendRow" aria-label="图例">
+          <span class="legendItem">
+            <span class="legendDot legendDotNormal"></span>
+            未偏航
+          </span>
+          <span class="legendItem">
+            <span class="legendDot legendDotOffroute"></span>
+            偏航
+          </span>
+          <span class="legendItem">
+            <span class="legendLine"></span>
+            时序线
+          </span>
+          <span class="legendItem">
+            <span class="legendProjectionLine"></span>
+            投影连线
+          </span>
+          <span class="legendItem">
+            <span class="legendProjectionDot"></span>
+            投影点
+          </span>
+        </div>
+      </div>
+
+      <div id="metaPanel" class="panel metaPanel"></div>
+      <div id="detailPanel" class="panel detailPanel" hidden></div>
+      <div id="banner" class="banner" hidden></div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

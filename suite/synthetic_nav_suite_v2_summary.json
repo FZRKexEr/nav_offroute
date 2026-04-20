@@ -1,0 +1,113 @@
+{
+  "seed": 20260420,
+  "scale": 1.0,
+  "case_count": 2900,
+  "offroute_expected_count": 1680,
+  "nooff_expected_count": 1220,
+  "categories": {
+    "loop_wrong_future_leg_off": {
+      "count": 70,
+      "off_expected": 70
+    },
+    "reverse_along_route_off": {
+      "count": 55,
+      "off_expected": 55
+    },
+    "roundabout_follow": {
+      "count": 70,
+      "off_expected": 0
+    },
+    "close_parallel_loop_follow": {
+      "count": 90,
+      "off_expected": 0
+    },
+    "gps_unusable_spikes_nooff": {
+      "count": 80,
+      "off_expected": 0
+    },
+    "uturn_missed_continue_straight": {
+      "count": 130,
+      "off_expected": 130
+    },
+    "fork_correct_branch_follow": {
+      "count": 70,
+      "off_expected": 0
+    },
+    "parallel_road_after_branch_off": {
+      "count": 150,
+      "off_expected": 150
+    },
+    "right_angle_missed_turn": {
+      "count": 320,
+      "off_expected": 320
+    },
+    "uturn_follow": {
+      "count": 120,
+      "off_expected": 0
+    },
+    "gps_usable_lowtrust_spike_nooff": {
+      "count": 70,
+      "off_expected": 0
+    },
+    "right_angle_early_turn_parallel": {
+      "count": 150,
+      "off_expected": 136
+    },
+    "small_corner_cut_nooff": {
+      "count": 90,
+      "off_expected": 0
+    },
+    "right_angle_follow": {
+      "count": 260,
+      "off_expected": 0
+    },
+    "roundabout_wrong_exit_off": {
+      "count": 80,
+      "off_expected": 80
+    },
+    "parallel_measurement_bias_nooff": {
+      "count": 150,
+      "off_expected": 0
+    },
+    "gradual_lateral_drift_probe": {
+      "count": 100,
+      "off_expected": 60
+    },
+    "start_approach_extension_nooff": {
+      "count": 70,
+      "off_expected": 0
+    },
+    "uturn_early": {
+      "count": 90,
+      "off_expected": 90
+    },
+    "right_angle_late_turn_parallel": {
+      "count": 170,
+      "off_expected": 154
+    },
+    "shortcut_diagonal": {
+      "count": 100,
+      "off_expected": 100
+    },
+    "shortcut_block_straight": {
+      "count": 110,
+      "off_expected": 110
+    },
+    "start_far_parallel_off": {
+      "count": 70,
+      "off_expected": 70
+    },
+    "fork_wrong_branch_off": {
+      "count": 110,
+      "off_expected": 110
+    },
+    "bad_heading_onroute_nooff": {
+      "count": 80,
+      "off_expected": 0
+    },
+    "wrongway_from_start_off": {
+      "count": 45,
+      "off_expected": 45
+    }
+  }
+}

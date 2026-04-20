@@ -1,0 +1,35 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Local environments
+.venv/
+.python-version
+
+# Editors / IDEs
+.idea/
+.vscode/
+
+# Frontend build artifacts
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Local debug outputs
+debug.csv
+validation/debug*.csv
+
+# Temporary smoke outputs
+suite/*smoke*.jsonl
+suite/*smoke*.json
+
+# Private real-world cases
+real_cases/
+
+# Large generated synthetic suites
+suite/*.jsonl

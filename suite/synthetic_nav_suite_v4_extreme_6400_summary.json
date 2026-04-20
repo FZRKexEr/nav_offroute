@@ -1,0 +1,197 @@
+{
+  "seed": 20260421,
+  "scale": 1.0,
+  "case_count": 6400,
+  "offroute_expected_count": 1656,
+  "nooff_expected_count": 4744,
+  "categories": {
+    "parallel_measurement_bias_nooff": {
+      "count": 168,
+      "off_expected": 0
+    },
+    "right_angle_missed_turn": {
+      "count": 356,
+      "off_expected": 356
+    },
+    "uturn_missed_continue_straight": {
+      "count": 221,
+      "off_expected": 221
+    },
+    "start_approach_extension_nooff": {
+      "count": 99,
+      "off_expected": 0
+    },
+    "shortcut_wrong_corridor_off": {
+      "count": 241,
+      "off_expected": 241
+    },
+    "right_angle_late_turn_parallel_ambiguous_nooff": {
+      "count": 32,
+      "off_expected": 0
+    },
+    "poor_gnss_large_error_nooff": {
+      "count": 348,
+      "off_expected": 0
+    },
+    "building_canyon_vector_bias_nooff": {
+      "count": 699,
+      "off_expected": 0
+    },
+    "parallel_branch_sustained_far_off": {
+      "count": 290,
+      "off_expected": 290
+    },
+    "uturn_early_allowed_nooff": {
+      "count": 256,
+      "off_expected": 0
+    },
+    "uturn_follow": {
+      "count": 229,
+      "off_expected": 0
+    },
+    "shortcut_rejoin_allowed_nooff": {
+      "count": 452,
+      "off_expected": 0
+    },
+    "temporary_bias_episode_nooff": {
+      "count": 439,
+      "off_expected": 0
+    },
+    "gradual_lateral_drift_ambiguous_nooff": {
+      "count": 42,
+      "off_expected": 0
+    },
+    "loop_skip_future_leg_ambiguous_nooff": {
+      "count": 106,
+      "off_expected": 0
+    },
+    "right_angle_follow": {
+      "count": 249,
+      "off_expected": 0
+    },
+    "parallel_same_shape_ambiguous_nooff": {
+      "count": 442,
+      "off_expected": 0
+    },
+    "parallel_road_after_branch_off": {
+      "count": 99,
+      "off_expected": 99
+    },
+    "right_angle_early_turn_parallel": {
+      "count": 60,
+      "off_expected": 43
+    },
+    "small_corner_cut_nooff": {
+      "count": 98,
+      "off_expected": 0
+    },
+    "close_parallel_loop_follow": {
+      "count": 139,
+      "off_expected": 0
+    },
+    "right_angle_late_parallel_ambiguous_nooff": {
+      "count": 59,
+      "off_expected": 0
+    },
+    "loop_wrong_corridor_off": {
+      "count": 35,
+      "off_expected": 35
+    },
+    "right_angle_late_turn_parallel": {
+      "count": 56,
+      "off_expected": 46
+    },
+    "shortcut_diagonal_allowed_nooff": {
+      "count": 85,
+      "off_expected": 0
+    },
+    "fork_correct_branch_follow": {
+      "count": 35,
+      "off_expected": 0
+    },
+    "uturn_early_far_ambiguous_nooff": {
+      "count": 55,
+      "off_expected": 0
+    },
+    "stopped_at_turn_nooff": {
+      "count": 66,
+      "off_expected": 0
+    },
+    "start_far_parallel_off": {
+      "count": 12,
+      "off_expected": 12
+    },
+    "gradual_lateral_drift_probe": {
+      "count": 82,
+      "off_expected": 32
+    },
+    "right_angle_corner_cut_allowed_nooff": {
+      "count": 112,
+      "off_expected": 0
+    },
+    "uturn_early_crossover_allowed_nooff": {
+      "count": 127,
+      "off_expected": 0
+    },
+    "start_far_parallel_ambiguous_nooff": {
+      "count": 86,
+      "off_expected": 0
+    },
+    "uturn_too_early_far_off": {
+      "count": 69,
+      "off_expected": 69
+    },
+    "right_angle_late_parallel_far_off": {
+      "count": 19,
+      "off_expected": 19
+    },
+    "wrongway_from_start_off": {
+      "count": 68,
+      "off_expected": 68
+    },
+    "bad_heading_onroute_nooff": {
+      "count": 37,
+      "off_expected": 0
+    },
+    "gps_unusable_spikes_nooff": {
+      "count": 31,
+      "off_expected": 0
+    },
+    "gps_usable_lowtrust_spike_nooff": {
+      "count": 36,
+      "off_expected": 0
+    },
+    "reverse_along_route_off": {
+      "count": 21,
+      "off_expected": 21
+    },
+    "right_angle_early_turn_parallel_ambiguous_nooff": {
+      "count": 41,
+      "off_expected": 0
+    },
+    "fork_wrong_branch_off": {
+      "count": 50,
+      "off_expected": 50
+    },
+    "right_angle_early_parallel_ambiguous_nooff": {
+      "count": 60,
+      "off_expected": 0
+    },
+    "roundabout_follow": {
+      "count": 38,
+      "off_expected": 0
+    },
+    "roundabout_wrong_exit_off": {
+      "count": 35,
+      "off_expected": 35
+    },
+    "right_angle_early_parallel_far_off": {
+      "count": 19,
+      "off_expected": 19
+    },
+    "shortcut_block_straight_allowed_nooff": {
+      "count": 1,
+      "off_expected": 0
+    }
+  }
+}
