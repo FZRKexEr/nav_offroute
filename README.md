@@ -1,15 +1,13 @@
 # nav_offroute
 
+![前端查看器示例](assets/20260421-042616.jpg)
+
 这个目录已经整理成 4 个主要模块：
 
 - `nav_offroute.py` 和 `profiles/`：偏航算法脚本
 - `suite/`：synthetic 数据生成脚本和生成结果
 - `validation/`：验证脚本和验证结果
 - `frontend/`：JSONL/GeoJSON 可视化查看器
-
-说明：
-
-- 当前 README 只描述公开可运行的 synthetic / validation / frontend 工作流。
 
 ## Quick Start
 
@@ -132,6 +130,99 @@ python suite/synthetic_nav_cases_v4_extreme.py \
   --limit 50
 ```
 
+## Synthetic Case Categories
+
+这些分类来自 synthetic suite 的 `meta.category` 字段，同时也会出现在 `case_id` 里。它们描述的是**样本语义**，不是算法跑完后的 `verdict`。
+
+命名约定：
+
+- `_off`：这个 case 的期望是“应该判偏航”。
+- `_nooff`：这个 case 的期望是“不应该判偏航”。
+- `_allowed_nooff`：几何上看起来有偏离，但产品语义上允许，不应该语音 reroute。
+- `_ambiguous_nooff`：这是保守语义下的边界样本，默认不报偏航。
+- `probe` / `混合`：这是刻意做出来的探针类样本，不同偏移幅度下可能得到不同期望。
+
+### 转弯与路口
+
+| 分类 | 期望 | 中文解释 | 出现于 |
+| --- | --- | --- | --- |
+| `right_angle_follow` | 不应报偏航 | 正常直角转弯，按规划完成 90 度转向 | v2 / v3 / v4 |
+| `right_angle_missed_turn` | 应报偏航 | 该拐弯时没有拐，继续直行离开规划路线 | v2 / v3 / v4 |
+| `right_angle_late_turn_parallel` | 混合 / 旧版过渡 | 晚拐，先冲过路口再进入与规划后续路段平行的路；旧版里既有 off 也有边界样本 | v2 / v3 / v4 |
+| `right_angle_early_turn_parallel` | 混合 / 旧版过渡 | 早拐，提前转入与规划后续路段平行的路；旧版里既有 off 也有边界样本 | v2 / v3 / v4 |
+| `right_angle_late_turn_parallel_ambiguous_nooff` | 不应报偏航 | 晚拐但仍贴近规划走廊，保守视为不报偏航 | v4 |
+| `right_angle_early_turn_parallel_ambiguous_nooff` | 不应报偏航 | 早拐但仍贴近规划走廊，保守视为不报偏航 | v4 |
+| `right_angle_late_parallel_ambiguous_nooff` | 不应报偏航 | 晚拐后保持近距离平行，v4 明确归为边界不报偏航 | v4 |
+| `right_angle_early_parallel_ambiguous_nooff` | 不应报偏航 | 早拐后保持近距离平行，v4 明确归为边界不报偏航 | v4 |
+| `right_angle_late_parallel_far_off` | 应报偏航 | 晚拐后离规划走廊较远且持续平行，应报偏航 | v4 |
+| `right_angle_early_parallel_far_off` | 应报偏航 | 早拐后离规划走廊较远且持续平行，应报偏航 | v4 |
+| `right_angle_corner_cut_allowed_nooff` | 不应报偏航 | 直角路口切角通过，但很快回到规划走廊，不应语音 reroute | v4 |
+| `small_corner_cut_nooff` | 不应报偏航 | 小幅切弯 / 抄近角，属于可容忍偏差 | v2 / v3 / v4 |
+| `stopped_at_turn_nooff` | 不应报偏航 | 在转角附近停车或缓行，航向和 GPS 不稳定，不应误报偏航 | v4 |
+
+### 掉头与回头弯
+
+| 分类 | 期望 | 中文解释 | 出现于 |
+| --- | --- | --- | --- |
+| `uturn_follow` | 不应报偏航 | 正常掉头 / 发卡弯，按规划完成 | v2 / v3 / v4 |
+| `uturn_missed_continue_straight` | 应报偏航 | 需要掉头但继续直行 | v2 / v3 / v4 |
+| `uturn_early` | 应报偏航 | 过早掉头，较早切到回程段 | v2 |
+| `uturn_early_allowed_nooff` | 不应报偏航 | 早掉头但仍可理解为提前进入预期反向走廊，保守不报偏航 | v3 / v4 |
+| `uturn_early_crossover_allowed_nooff` | 不应报偏航 | 早掉头或跨到对向走廊，但明显仍在朝预期对向线回归 | v4 |
+| `uturn_early_far_ambiguous_nooff` | 不应报偏航 | 较早掉头且距离较远，但仍不足以确定偏航，保守 nooff | v4 |
+| `uturn_too_early_far_off` | 应报偏航 | 掉头太早且离规划掉头点太远，难以合理回归，应报偏航 | v3 / v4 |
+
+### Shortcut 与重回路线
+
+| 分类 | 期望 | 中文解释 | 出现于 |
+| --- | --- | --- | --- |
+| `shortcut_block_straight` | 应报偏航 | 绕过街区的一整段近路后回到路线；在 v2 中仍按偏航处理 | v2 |
+| `shortcut_diagonal` | 应报偏航 | 穿过 dogleg / 折线路段的对角近路；在 v2 中仍按偏航处理 | v2 |
+| `shortcut_block_straight_allowed_nooff` | 不应报偏航 | 同街区直穿 shortcut，但在保守语义下允许 | v3 / v4 |
+| `shortcut_diagonal_allowed_nooff` | 不应报偏航 | 对角穿越但仍很快重回规划走廊，保守允许 | v3 / v4 |
+| `shortcut_rejoin_allowed_nooff` | 不应报偏航 | 走更短的本地路后重新并回规划路线，不应语音 reroute | v3 / v4 |
+| `shortcut_wrong_corridor_off` | 应报偏航 | 虽然看起来像 shortcut，但实际进入了错误 / 对向走廊，短期内不可能合理回归 | v3 / v4 |
+
+### 平行路、起终点与岔路
+
+| 分类 | 期望 | 中文解释 | 出现于 |
+| --- | --- | --- | --- |
+| `parallel_measurement_bias_nooff` | 不应报偏航 | GPS 与路线整体平行偏移，更像地图 / GPS 对齐误差 | v2 / v3 / v4 |
+| `parallel_road_after_branch_off` | 应报偏航 | 从支路分出去后沿平行道路持续行驶，应报偏航 | v2 / v3 / v4 |
+| `parallel_same_shape_ambiguous_nooff` | 不应报偏航 | 轨迹与规划形状几乎相同，但整体平移到旁边一条平行道路，保守视为不报偏航 | v3 / v4 |
+| `parallel_branch_sustained_far_off` | 应报偏航 | 分叉后进入较远平行支路并持续偏离，应报偏航 | v3 / v4 |
+| `start_approach_extension_nooff` | 不应报偏航 | 从路线起点延长线接近起点，属于起步接入，不应报偏航 | v2 / v3 / v4 |
+| `start_far_parallel_off` | 应报偏航 | 一开始就在较远平行路上，明显还没进入规划路线 | v2 / v3 / v4 |
+| `start_far_parallel_ambiguous_nooff` | 不应报偏航 | 起步锁路前处于平行路 / 辅路附近，仍有可能接入，保守不报偏航 | v4 |
+| `wrongway_from_start_off` | 应报偏航 | 从起点附近就朝错误方向离开 | v2 / v3 / v4 |
+| `fork_correct_branch_follow` | 不应报偏航 | 岔路口走了正确分支 | v2 / v3 / v4 |
+| `fork_wrong_branch_off` | 应报偏航 | 岔路口走错分支 | v2 / v3 / v4 |
+| `gradual_lateral_drift_probe` | 混合 / 探针样本 | 逐渐横向漂移的探针样本；偏移小可能只是误差，偏移大则应报偏航 | v2 / v3 / v4 |
+| `gradual_lateral_drift_ambiguous_nooff` | 不应报偏航 | 渐进横向漂移但幅度不足以确认偏航，保守不报偏航 | v3 / v4 |
+
+### 回环、环岛与反向行驶
+
+| 分类 | 期望 | 中文解释 | 出现于 |
+| --- | --- | --- | --- |
+| `close_parallel_loop_follow` | 不应报偏航 | 近距离回环 / 贴近未来路段的正常跟随，不应误判 | v2 / v3 / v4 |
+| `loop_wrong_future_leg_off` | 应报偏航 | 提前跳到 loop 的错误未来路段，应报偏航 | v2 / v3 |
+| `loop_skip_future_leg_ambiguous_nooff` | 不应报偏航 | 略过 loop 贴到未来腿，但无道路拓扑时很难确认 spoken off-route，保守不报偏航 | v4 |
+| `loop_wrong_corridor_off` | 应报偏航 | 在回环场景里离开到错误 / 对向走廊，应报偏航 | v4 |
+| `roundabout_follow` | 不应报偏航 | 正常通过环岛 | v2 / v3 / v4 |
+| `roundabout_wrong_exit_off` | 应报偏航 | 环岛走错出口 | v2 / v3 / v4 |
+| `reverse_along_route_off` | 应报偏航 | 沿规划路线反向行驶 | v2 / v3 / v4 |
+
+### GPS 质量与传感器异常
+
+| 分类 | 期望 | 中文解释 | 出现于 |
+| --- | --- | --- | --- |
+| `gps_unusable_spikes_nooff` | 不应报偏航 | 少量不可用的远距 GPS 尖刺，不应报偏航 | v2 / v3 / v4 |
+| `gps_usable_lowtrust_spike_nooff` | 不应报偏航 | 单个可用但低可信的尖刺点，不应报偏航 | v2 / v3 / v4 |
+| `bad_heading_onroute_nooff` | 不应报偏航 | 实际仍在路线上，但航向传感器偶发错误 | v2 / v3 / v4 |
+| `building_canyon_vector_bias_nooff` | 不应报偏航 | 城市峡谷 / 多路径导致整体向量偏移，实际仍在规划线路附近 | v3 / v4 |
+| `temporary_bias_episode_nooff` | 不应报偏航 | 一段时间出现一致性 GPS 偏移，之后恢复，不应报偏航 | v3 / v4 |
+| `poor_gnss_large_error_nooff` | 不应报偏航 | GNSS 很差、误差很大，但缺乏独立证据，不应直接 spoken off-route | v3 / v4 |
+
 ## Module 3: Validate Synthetic Suites
 
 验证脚本位置：
@@ -231,10 +322,6 @@ npm run preview
 ```
 
 查看器默认不会自动读取任何 JSONL，需要手动上传。
-
-界面示例：
-
-![Frontend viewer example](assets/20260421-042616.jpg)
 
 ### In the viewer
 
