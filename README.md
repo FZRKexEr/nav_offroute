@@ -232,6 +232,10 @@ npm run preview
 
 查看器默认不会自动读取任何 JSONL，需要手动上传。
 
+界面示例：
+
+![Frontend viewer example](assets/20260421-042616.jpg)
+
 ### In the viewer
 
 1. 打开页面
